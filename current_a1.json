@@ -1,0 +1,70 @@
+{
+  "id": "a1",
+  "label": "A-1",
+  "part": "A",
+  "section": "プロローグ",
+  "frames": "1-4",
+  "description": "暗闇のエヴァ（膝を抱えて座る）→テキスト「歌うことができなくなった」→「もう歩き出すことができなかった」→「だけど——」",
+  "image": {
+    "src": "/panels/a1.png?t=1771682135559",
+    "history": [
+      "/panels/panel-a1.png"
+    ]
+  },
+  "gap_before": 0,
+  "gap_color": "#ffffff",
+  "bubbles": [],
+  "sfx": [],
+  "characters": [
+    "Eva"
+  ],
+  "mood": "絶望 → 微かな希望",
+  "loveart_prompt_notes": "コマ1: 暗闇、スポットライトの中エヴァが膝を抱える。涙。コマ2-3: 黒背景に白テキスト。コマ4: 黒→グレーのグラデーション背景に「だけど——」",
+  "frame_count": 4,
+  "split_mode": "manual",
+  "split_positions": [
+    0,
+    0.40539133374040476,
+    0.5975117759944173,
+    0.7936093422889045,
+    1
+  ],
+  "sub_panels": [
+    {
+      "id": "a1-f1",
+      "y_start": 0,
+      "y_end": 0.40539133374040476,
+      "gap_before": 0,
+      "gap_color": "#ffffff",
+      "bubbles": [],
+      "sfx": []
+    },
+    {
+      "id": "a1-f2",
+      "y_start": 0.40539133374040476,
+      "y_end": 0.5975117759944173,
+      "gap_before": 389,
+      "gap_color": "#ffffff",
+      "bubbles": [],
+      "sfx": []
+    },
+    {
+      "id": "a1-f3",
+      "y_start": 0.5975117759944173,
+      "y_end": 0.7936093422889045,
+      "gap_before": 306,
+      "gap_color": "#ffffff",
+      "bubbles": [],
+      "sfx": []
+    },
+    {
+      "id": "a1-f4",
+      "y_start": 0.7936093422889045,
+      "y_end": 1,
+      "gap_before": 479,
+      "gap_color": "#ffffff",
+      "bubbles": [],
+      "sfx": []
+    }
+  ]
+}

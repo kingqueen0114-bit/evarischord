@@ -1,0 +1,3 @@
+--- components/canvas/BubbleElement.tsx
++++ components/canvas/BubbleElement.tsx
+@@ -10,6 +10,6 @@

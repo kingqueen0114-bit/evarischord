@@ -1,0 +1,932 @@
+{
+  "title": "EVARIS CHORD",
+  "episode": "EP001",
+  "panels": [
+    {
+      "id": "a1",
+      "label": "A-1",
+      "part": "A",
+      "section": "プロローグ",
+      "frames": "1-4",
+      "description": "暗闇のエヴァ（膝を抱えて座る）→テキスト「歌うことができなくなった」→「もう歩き出すことができなかった」→「だけど——」",
+      "image": {
+        "src": "/panels/a1.png?t=1771682135559",
+        "history": [
+          "/panels/panel-a1.png"
+        ]
+      },
+      "gap_before": 0,
+      "gap_color": "#ffffff",
+      "bubbles": [],
+      "sfx": [],
+      "characters": [
+        "Eva"
+      ],
+      "mood": "絶望 → 微かな希望",
+      "loveart_prompt_notes": "コマ1: 暗闇、スポットライトの中エヴァが膝を抱える。涙。コマ2-3: 黒背景に白テキスト。コマ4: 黒→グレーのグラデーション背景に「だけど——」",
+      "frame_count": 4,
+      "split_mode": "manual",
+      "split_positions": [
+        0,
+        0.40539133374040476,
+        0.5975117759944173,
+        0.7936093422889045,
+        1
+      ],
+      "sub_panels": [
+        {
+          "id": "a1-f1",
+          "y_start": 0,
+          "y_end": 0.40539133374040476,
+          "gap_before": 0,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": [],
+          "display_height_ratio": 2,
+          "crop_offset_y": 0.5
+        },
+        {
+          "id": "a1-f2",
+          "y_start": 0.40539133374040476,
+          "y_end": 0.5975117759944173,
+          "gap_before": 504,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": []
+        },
+        {
+          "id": "a1-f3",
+          "y_start": 0.5975117759944173,
+          "y_end": 0.7936093422889045,
+          "gap_before": 306,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": []
+        },
+        {
+          "id": "a1-f4",
+          "y_start": 0.7936093422889045,
+          "y_end": 1,
+          "gap_before": 479,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": []
+        }
+      ]
+    },
+    {
+      "id": "a2",
+      "label": "A-2",
+      "part": "A",
+      "section": "プロローグ",
+      "frames": "5-8",
+      "description": "タイトルロゴ「EVARIS CHORD」→エヴァ横顔（光の粒子）→エヴァ正面→アイリス正面（黒ドレス、ゴールドの瞳）",
+      "image": {
+        "src": "/panels/a2.png?t=1771682324625",
+        "history": [
+          "/panels/panel-a2.png"
+        ]
+      },
+      "gap_before": 0,
+      "gap_color": "#ffffff",
+      "bubbles": [],
+      "sfx": [],
+      "characters": [
+        "Eva",
+        "Iris"
+      ],
+      "mood": "神秘的 → 運命の出会い",
+      "loveart_prompt_notes": "コマ5: タイトルロゴ、エレガントな装飾フォント、光の粒子。コマ6: エヴァ横顔、光の中、黒ベスト+白T。コマ7: エヴァ正面アップ、決意の表情。コマ8: アイリス正面、シルバー髪+ゴールド瞳、黒ドレス、威厳",
+      "sub_panels": [
+        {
+          "id": "a2-f1",
+          "y_start": 0,
+          "y_end": 0.24612100924633634,
+          "gap_before": 523,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": [
+            {
+              "id": "sfx-1771754689625",
+              "name": "💥 ドン！",
+              "defaultText": "ドン！",
+              "category": "impact",
+              "fontSize": 80,
+              "color": "#ef4444",
+              "fontWeight": "black",
+              "outline": {
+                "enabled": true,
+                "color": "#ffffff",
+                "width": 6
+              },
+              "opacity": 1,
+              "isVertical": false,
+              "scale": {
+                "x": 1,
+                "y": 1
+              },
+              "skewX": -0.2,
+              "shadow": {
+                "enabled": false,
+                "color": "#000000",
+                "blur": 4,
+                "offsetX": 2,
+                "offsetY": 2
+              },
+              "fontFamily": "\"Dela Gothic One\", sans-serif",
+              "effectStyle": "impact",
+              "type": "text",
+              "text": "ドン！",
+              "position": {
+                "x": 50,
+                "y": 50
+              },
+              "rotation": 0
+            }
+          ],
+          "display_height_ratio": 1.5,
+          "crop_offset_y": 0.5
+        },
+        {
+          "id": "a2-f2",
+          "y_start": 0.24612100924633634,
+          "y_end": 0.5,
+          "gap_before": 585,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": []
+        },
+        {
+          "id": "a2-f3",
+          "y_start": 0.5,
+          "y_end": 0.7518127398813678,
+          "gap_before": 287,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": []
+        },
+        {
+          "id": "a2-f4",
+          "y_start": 0.7518127398813678,
+          "y_end": 1,
+          "gap_before": 403,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": []
+        }
+      ],
+      "frame_count": 4,
+      "split_mode": "manual",
+      "split_positions": [
+        0,
+        0.24612100924633634,
+        0.5,
+        0.7518127398813678,
+        1
+      ]
+    },
+    {
+      "id": "a3",
+      "label": "A-3",
+      "part": "A",
+      "section": "プロローグ",
+      "frames": "9-12",
+      "description": "テキスト「今、世界最高の歌姫と」→コンサートシーン（アイリス背面、満員の観客）→「一つになる。」→アイリス振り返り（微笑み）",
+      "image": {
+        "src": "/panels/a3.png?t=1771682692458",
+        "history": [
+          "/panels/panel-a3.png"
+        ]
+      },
+      "gap_before": 0,
+      "gap_color": "#ffffff",
+      "bubbles": [],
+      "sfx": [],
+      "characters": [
+        "Iris"
+      ],
+      "mood": "壮大 → 希望",
+      "loveart_prompt_notes": "コマ9: グレー背景にテキスト。コマ10: アイリス背面、ステージ上、大観衆、ゴールド照明。コマ11: ウォーム背景に「一つになる。」。コマ12: アイリス振り返り、微笑み、ボケた照明、シルバー髪",
+      "sub_panels": [
+        {
+          "id": "a3-f1",
+          "y_start": 0,
+          "y_end": 0.19740873604326586,
+          "gap_before": 293,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": []
+        },
+        {
+          "id": "a3-f2",
+          "y_start": 0.19740873604326586,
+          "y_end": 0.5,
+          "gap_before": 318,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": [],
+          "display_height_ratio": 2,
+          "crop_offset_y": 0.5
+        },
+        {
+          "id": "a3-f3",
+          "y_start": 0.5,
+          "y_end": 0.6889474659804605,
+          "gap_before": 392,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": []
+        },
+        {
+          "id": "a3-f4",
+          "y_start": 0.6889474659804605,
+          "y_end": 1,
+          "gap_before": 354,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": [],
+          "display_height_ratio": 2,
+          "crop_offset_y": 0.5
+        }
+      ],
+      "frame_count": 4,
+      "split_mode": "manual",
+      "split_positions": [
+        0,
+        0.19740873604326586,
+        0.5,
+        0.6889474659804605,
+        1
+      ]
+    },
+    {
+      "id": "b1",
+      "label": "B-1",
+      "part": "B",
+      "section": "6ヶ月前",
+      "frames": "13-16",
+      "description": "黒余白→「6ヶ月前——」→コンサート会場（観客シルエット+ペンライト）→アイリス熱唱（ステージ全景）→ペンライトの海クローズアップ",
+      "image": {
+        "src": "/panels/b1.png?t=1771682945000",
+        "history": [
+          "/panels/panel-b1.png"
+        ]
+      },
+      "gap_before": 30,
+      "gap_color": "#ffffff",
+      "bubbles": [],
+      "sfx": [],
+      "characters": [
+        "Iris"
+      ],
+      "mood": "華やかさの絶頂",
+      "loveart_prompt_notes": "コマ13: 黒背景に「6ヶ月前——」白テキスト。コマ14: コンサート会場超広角、眩しい照明、爆発的なライティング。コマ15: アイリス全身、黒ドレス、両手を広げて歌う、シルバー髪なびく。コマ16: ペンライトの海、カラフル、観客の手",
+      "sub_panels": [
+        {
+          "id": "b1-f1",
+          "y_start": 0,
+          "y_end": 0.1912290648988137,
+          "gap_before": 539.6666666666667,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": []
+        },
+        {
+          "id": "b1-f2",
+          "y_start": 0.1912290648988137,
+          "y_end": 0.4329177206908583,
+          "gap_before": 572,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": [
+            {
+              "id": "sfx-1771766239129",
+              "name": "👻 ゴゴゴ…",
+              "defaultText": "ゴゴゴ…",
+              "category": "ambient",
+              "fontSize": 60,
+              "color": "#e60554",
+              "fontWeight": "bold",
+              "outline": {
+                "enabled": true,
+                "color": "#000000",
+                "width": 3
+              },
+              "opacity": 1,
+              "isVertical": true,
+              "scale": {
+                "x": 1.5333333333333334,
+                "y": 1.5333333333333334
+              },
+              "skewX": 0,
+              "shadow": {
+                "enabled": true,
+                "color": "#8b5cf6",
+                "blur": 15,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              "fontFamily": "\"RocknRoll One\", sans-serif",
+              "effectStyle": "wave",
+              "type": "text",
+              "text": "ワー",
+              "position": {
+                "x": 75.83333333333336,
+                "y": -8.065286599958176
+              },
+              "rotation": 0
+            },
+            {
+              "id": "sfx-1771766287578",
+              "name": "👻 ゴゴゴ…",
+              "defaultText": "ゴゴゴ…",
+              "category": "ambient",
+              "fontSize": 60,
+              "color": "#f9062b",
+              "fontWeight": "bold",
+              "outline": {
+                "enabled": true,
+                "color": "#000000",
+                "width": 3
+              },
+              "opacity": 1,
+              "isVertical": true,
+              "scale": {
+                "x": 1.3,
+                "y": 1.3
+              },
+              "skewX": 0,
+              "shadow": {
+                "enabled": true,
+                "color": "#8b5cf6",
+                "blur": 15,
+                "offsetX": 0,
+                "offsetY": 0
+              },
+              "fontFamily": "\"RocknRoll One\", sans-serif",
+              "effectStyle": "wave",
+              "type": "text",
+              "text": "ワー",
+              "position": {
+                "x": 13.541666666666663,
+                "y": 11.503677392292948
+              },
+              "rotation": 0
+            }
+          ],
+          "display_height_ratio": 1.5,
+          "crop_offset_y": 0.5
+        },
+        {
+          "id": "b1-f3",
+          "y_start": 0.4329177206908583,
+          "y_end": 0.75,
+          "gap_before": 346,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": [],
+          "display_height_ratio": 2,
+          "crop_offset_y": 0.5
+        },
+        {
+          "id": "b1-f4",
+          "y_start": 0.75,
+          "y_end": 1,
+          "gap_before": 352,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": [],
+          "display_height_ratio": 1.5,
+          "crop_offset_y": 0.5
+        }
+      ],
+      "frame_count": 4,
+      "split_mode": "manual",
+      "split_positions": [
+        0,
+        0.1912290648988137,
+        0.4329177206908583,
+        0.75,
+        1
+      ]
+    },
+    {
+      "id": "b2",
+      "label": "B-2",
+      "part": "B",
+      "section": "6ヶ月前",
+      "frames": "17-20",
+      "description": "泣くファン（ペンライト持ち）→フィナーレ（花吹雪+会場全景）→楽屋バックステージ（CREWスタッフ行き交い）→鏡の前のアイリス「…まだ足りない」",
+      "image": {
+        "src": "/panels/b2.png?t=1771683093344",
+        "history": [
+          "/panels/panel-b2.png"
+        ]
+      },
+      "gap_before": 0,
+      "gap_color": "#ffffff",
+      "bubbles": [
+        {
+          "id": "b2-bubble1",
+          "type": "thought",
+          "text": "…まだ足りない",
+          "position": {
+            "x": 65,
+            "y": 82
+          },
+          "size": {
+            "w": 140,
+            "h": 80
+          },
+          "fontSize": 16,
+          "fontWeight": "bold",
+          "tail": {
+            "direction": "left",
+            "visible": false
+          },
+          "columns": 1
+        }
+      ],
+      "sfx": [],
+      "characters": [
+        "Iris"
+      ],
+      "mood": "華やかさ → 孤独・不満",
+      "loveart_prompt_notes": "コマ17: ファンの女性クローズアップ、涙、ペンライト握りしめ。コマ18: 会場全景、花吹雪、紫のライティング。コマ19: 楽屋通路、CREWシャツのスタッフたち、ケーブル、機材。コマ20: 鏡の前、メイク道具、アイリスの横顔が鏡に映る、「…まだ足りない」思考吹き出し",
+      "frame_count": 4,
+      "split_mode": "manual",
+      "split_positions": [
+        0,
+        0.25,
+        0.5,
+        0.75,
+        1
+      ],
+      "sub_panels": [
+        {
+          "id": "b2-f1",
+          "y_start": 0,
+          "y_end": 0.25,
+          "gap_before": 344,
+          "gap_color": "#ffffff",
+          "bubbles": [
+            {
+              "id": "bubble-1771766430273",
+              "type": "whisper",
+              "text": "セリフ",
+              "position": {
+                "x": 50,
+                "y": 50
+              },
+              "size": {
+                "w": 100,
+                "h": 150
+              },
+              "fontSize": 20,
+              "fontWeight": "bold",
+              "columns": 1,
+              "tail": {
+                "direction": "bottom",
+                "visible": true,
+                "tipPosition": {
+                  "x": 50,
+                  "y": 70
+                }
+              }
+            }
+          ],
+          "sfx": [],
+          "display_height_ratio": 1.5,
+          "crop_offset_y": 0.5
+        },
+        {
+          "id": "b2-f2",
+          "y_start": 0.25,
+          "y_end": 0.5,
+          "gap_before": 378,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": [],
+          "display_height_ratio": 2,
+          "crop_offset_y": 0.5
+        },
+        {
+          "id": "b2-f3",
+          "y_start": 0.5,
+          "y_end": 0.75,
+          "gap_before": 379,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": [],
+          "display_height_ratio": 1.5,
+          "crop_offset_y": 0.5
+        },
+        {
+          "id": "b2-f4",
+          "y_start": 0.75,
+          "y_end": 1,
+          "gap_before": 432.66666666666714,
+          "gap_color": "#ffffff",
+          "bubbles": [
+            {
+              "id": "bubble-1771766440456",
+              "type": "normal",
+              "text": "まだ足りない。。。",
+              "position": {
+                "x": 89.75694386433422,
+                "y": 7.0497032801125545
+              },
+              "size": {
+                "w": 191.24300075286217,
+                "h": 414.91449165934637
+              },
+              "fontSize": 36,
+              "fontWeight": "bold",
+              "columns": 1,
+              "tail": {
+                "direction": "bottom",
+                "visible": true,
+                "tipPosition": {
+                  "x": -76.66666666666663,
+                  "y": 154.99376604504278
+                }
+              },
+              "customSize": true
+            }
+          ],
+          "sfx": [],
+          "display_height_ratio": 1.5,
+          "crop_offset_y": 0.5
+        }
+      ]
+    },
+    {
+      "id": "b3",
+      "label": "B-3",
+      "part": "B",
+      "section": "葛城登場",
+      "frames": "21-24",
+      "description": "アイリス意味深「…これが最後の曲になるかもしれないけど」→スマホ画面（メッセージアプリ）→葛城VIPルーム初登場（ワイングラス、不敵な笑み）→葛城口元アップ「…予定通りだ」",
+      "image": {
+        "src": "/panels/b3.png?t=1771687187702",
+        "history": [
+          "/panels/panel-b3.png"
+        ]
+      },
+      "gap_before": 20,
+      "gap_color": "#ffffff",
+      "bubbles": [
+        {
+          "id": "b3-bubble1",
+          "type": "whisper",
+          "text": "…これが最後の曲になるかもしれないけど",
+          "position": {
+            "x": 10,
+            "y": 8
+          },
+          "size": {
+            "w": 160,
+            "h": 100
+          },
+          "fontSize": 14,
+          "fontWeight": "bold",
+          "tail": {
+            "direction": "bottom-right",
+            "visible": true
+          },
+          "columns": 2
+        },
+        {
+          "id": "b3-bubble2",
+          "type": "whisper",
+          "text": "なるかもしれないけど",
+          "position": {
+            "x": 60,
+            "y": 15
+          },
+          "size": {
+            "w": 140,
+            "h": 70
+          },
+          "fontSize": 14,
+          "fontWeight": "bold",
+          "tail": {
+            "direction": "bottom-left",
+            "visible": true
+          },
+          "columns": 1
+        },
+        {
+          "id": "b3-bubble3",
+          "type": "normal",
+          "text": "…予定通りだ",
+          "position": {
+            "x": 30,
+            "y": 88
+          },
+          "size": {
+            "w": 140,
+            "h": 70
+          },
+          "fontSize": 16,
+          "fontWeight": "bold",
+          "tail": {
+            "direction": "top",
+            "visible": true
+          },
+          "columns": 1
+        }
+      ],
+      "sfx": [],
+      "characters": [
+        "Iris",
+        "Katsuragi"
+      ],
+      "mood": "不穏 → 悪意の露出",
+      "loveart_prompt_notes": "コマ21: アイリス楽屋、暗い照明、意味深な表情。コマ22: スマホ画面クローズアップ、メッセージアプリ。コマ23: ★葛城初登場——VIPラウンジ、窓越しにステージ、ワイングラス片手、ダークネイビースーツ+黒タートル、黒髪オールバック+シルバーメッシュ、不敵な笑み、赤い光が反射。コマ24: 葛城の口元アップ、暗い照明、「…予定通りだ」",
+      "frame_count": 4,
+      "split_mode": "manual",
+      "split_positions": [
+        0,
+        0.2967795926378227,
+        0.5070655966503839,
+        0.7751493806699232,
+        1
+      ],
+      "sub_panels": [
+        {
+          "id": "b3-f1",
+          "y_start": 0,
+          "y_end": 0.2967795926378227,
+          "gap_before": 340.00000000000006,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": []
+        },
+        {
+          "id": "b3-f2",
+          "y_start": 0.2967795926378227,
+          "y_end": 0.5070655966503839,
+          "gap_before": 0,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": []
+        },
+        {
+          "id": "b3-f3",
+          "y_start": 0.5070655966503839,
+          "y_end": 0.7751493806699232,
+          "gap_before": 0,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": []
+        },
+        {
+          "id": "b3-f4",
+          "y_start": 0.7751493806699232,
+          "y_end": 1,
+          "gap_before": 0,
+          "gap_color": "#ffffff",
+          "bubbles": [],
+          "sfx": []
+        }
+      ]
+    },
+    {
+      "id": "b4",
+      "label": "B-4",
+      "part": "B",
+      "section": "嵐の前",
+      "frames": "25-28",
+      "description": "葛城タブレット操作「……」→タブレット画面（データダッシュボード）→夜の高速道路（黒い車）→車内アイリス（窓外の夜景を見つめる）",
+      "image": {
+        "src": "/panels/b4.png?t=1771687197075",
+        "history": [
+          "/panels/panel-b4.png"
+        ]
+      },
+      "gap_before": 0,
+      "gap_color": "#ffffff",
+      "bubbles": [
+        {
+          "id": "b4-bubble1",
+          "type": "normal",
+          "text": "……",
+          "position": {
+            "x": 35,
+            "y": 5
+          },
+          "size": {
+            "w": 60,
+            "h": 50
+          },
+          "fontSize": 16,
+          "fontWeight": "bold",
+          "tail": {
+            "direction": "bottom",
+            "visible": true
+          },
+          "columns": 1
+        }
+      ],
+      "sfx": [],
+      "characters": [
+        "Katsuragi",
+        "Iris"
+      ],
+      "mood": "沈黙 → 不穏な静けさ",
+      "loveart_prompt_notes": "コマ25: 葛城ソファに座りタブレット操作、暗い照明、ダークネイビースーツ。コマ26: タブレット画面クローズアップ（データダッシュボード、グラフ）。コマ27: 夜の高速道路、黒いセダン、都市の夜景。コマ28: 車内後部座席、アイリス窓外を見つめる、寂しげ"
+    },
+    {
+      "id": "b5",
+      "label": "B-5",
+      "part": "B",
+      "section": "事故",
+      "frames": "29-32",
+      "description": "スマホ画面（既読スルー）「…返事は来なかった」→ブレーキペダル踏み込み+赤SFX「ガッ！」→運転手パニック「ブレーキが——!!」→対向車接近（蛇行する車）",
+      "image": {
+        "src": "/panels/b5.png?t=1771687205726",
+        "history": [
+          "/panels/panel-b5.png"
+        ]
+      },
+      "gap_before": 0,
+      "gap_color": "#ffffff",
+      "bubbles": [
+        {
+          "id": "b5-bubble1",
+          "type": "shout",
+          "text": "ブレーキが——!!",
+          "position": {
+            "x": 15,
+            "y": 58
+          },
+          "size": {
+            "w": 180,
+            "h": 90
+          },
+          "fontSize": 18,
+          "fontWeight": "black",
+          "tail": {
+            "direction": "right",
+            "visible": true
+          },
+          "columns": 1
+        }
+      ],
+      "sfx": [
+        {
+          "id": "b5-sfx1",
+          "text": "ガッ！",
+          "category": "impact",
+          "position": {
+            "x": 30,
+            "y": 35
+          },
+          "fontSize": 48,
+          "color": "#ff3333",
+          "rotation": -5,
+          "fontWeight": "black",
+          "outline": {
+            "enabled": true,
+            "color": "#000000",
+            "width": 3
+          },
+          "opacity": 1
+        }
+      ],
+      "characters": [
+        "Iris"
+      ],
+      "mood": "緊張 → パニック",
+      "loveart_prompt_notes": "コマ29: スマホ画面、メッセージアプリ既読マーク。コマ30: ブレーキペダルを踏む足のクローズアップ、速度線。コマ31: 運転手（アイリスではない）パニック表情。コマ32: 対向車のヘッドライト接近、蛇行する黒い車"
+    },
+    {
+      "id": "b6",
+      "label": "B-6",
+      "part": "B",
+      "section": "衝突",
+      "frames": "33-36",
+      "description": "アイリス恐怖「っ——!」→ヘッドライトのフラッシュ→「ガシャァァン!!」衝突→100px黒余白（沈黙）",
+      "image": {
+        "src": "/panels/b6.png?t=1771687214675",
+        "history": [
+          "/panels/panel-b6.png"
+        ]
+      },
+      "gap_before": 0,
+      "gap_color": "#ffffff",
+      "bubbles": [
+        {
+          "id": "b6-bubble1",
+          "type": "shout",
+          "text": "っ——!",
+          "position": {
+            "x": 10,
+            "y": 10
+          },
+          "size": {
+            "w": 80,
+            "h": 60
+          },
+          "fontSize": 18,
+          "fontWeight": "black",
+          "tail": {
+            "direction": "right",
+            "visible": true
+          },
+          "columns": 1
+        }
+      ],
+      "sfx": [
+        {
+          "id": "b6-sfx1",
+          "text": "ガシャァァン!!",
+          "category": "impact",
+          "position": {
+            "x": 20,
+            "y": 55
+          },
+          "fontSize": 56,
+          "color": "#000000",
+          "rotation": -8,
+          "fontWeight": "black",
+          "outline": {
+            "enabled": false,
+            "color": "#ffffff",
+            "width": 0
+          },
+          "opacity": 1
+        }
+      ],
+      "characters": [
+        "Iris"
+      ],
+      "mood": "恐怖 → 衝撃 → 沈黙",
+      "loveart_prompt_notes": "コマ33: アイリスのクローズアップ、恐怖の表情、シートベルト。コマ34: ヘッドライトの白いフラッシュ、ひび割れたフロントガラス。コマ35: 「ガシャァァン!!」大きなSFX。コマ36: 100px以上の黒い余白（沈黙の演出）"
+    },
+    {
+      "id": "b7",
+      "label": "B-7",
+      "part": "B",
+      "section": "崩壊",
+      "frames": "37-39",
+      "description": "病院ベッドのアイリス（包帯、点滴、心拍モニター）→TV「速報：人気歌手アイリス、交通事故で重体」→レン崩壊（スマホ落とす「カタン…」涙）",
+      "image": {
+        "src": "/panels/b7.png?t=1771687225630",
+        "history": [
+          "/panels/panel-b7.png"
+        ]
+      },
+      "gap_before": 0,
+      "gap_color": "#ffffff",
+      "bubbles": [],
+      "sfx": [
+        {
+          "id": "b7-sfx1",
+          "text": "ピッ…ピッ…",
+          "category": "ambient",
+          "position": {
+            "x": 70,
+            "y": 5
+          },
+          "fontSize": 20,
+          "color": "#66cccc",
+          "rotation": 0,
+          "fontWeight": "normal",
+          "outline": {
+            "enabled": false,
+            "color": "#000",
+            "width": 0
+          },
+          "opacity": 0.8
+        },
+        {
+          "id": "b7-sfx2",
+          "text": "カタン…",
+          "category": "ambient",
+          "position": {
+            "x": 70,
+            "y": 88
+          },
+          "fontSize": 18,
+          "color": "#aaaaaa",
+          "rotation": 0,
+          "fontWeight": "normal",
+          "outline": {
+            "enabled": false,
+            "color": "#000",
+            "width": 0
+          },
+          "opacity": 0.7
+        }
+      ],
+      "characters": [
+        "Iris",
+        "Ren"
+      ],
+      "mood": "静寂 → 衝撃 → 崩壊",
+      "loveart_prompt_notes": "コマ37: 病室、アイリスがベッドに横たわる、包帯、点滴、心拍モニター、青白い照明。コマ38: TV画面「速報」赤テロップ、アイリスのステージ写真、ニュース画面。コマ39: ★レン初登場——暗い部屋、黒髪くせ毛ショート、ロイヤルブルーの瞳（涙）、グレーパーカー+首にヘッドホン、スマホが手から落ちる瞬間"
+    }
+  ]
+}

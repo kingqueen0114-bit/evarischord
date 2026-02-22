@@ -1,0 +1,3 @@
+- **Confirmation & Execution**: 重要なコード変更やインフラ操作の際は、必ず事前に「Plan（計画）」を提示し、人間の承認を得てから「Execution（実行）」に移ること。
+- **Self-Correction**: 実装後は必ずテストを行い、自身で動作証明（Verification）を行うこと。
+- **Language**: All output including Walkthroughs, task descriptions in `todo.md`, lessons, Artifacts, and chat communications MUST be entirely in Japanese (日本語).
