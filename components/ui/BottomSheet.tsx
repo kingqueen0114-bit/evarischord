@@ -8,7 +8,9 @@ interface BottomSheetProps {
 }
 
 export default function BottomSheet({ open, children }: BottomSheetProps) {
-    const [height, setHeight] = useState(320); // Default height in px
+    const [height, setHeight] = useState(
+        typeof window !== 'undefined' ? Math.round(window.innerHeight * 0.45) : 380
+    ); // Default: 45% of viewport height
     const isDragging = useRef(false);
     const startY = useRef(0);
     const startHeight = useRef(0);

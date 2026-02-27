@@ -23,10 +23,39 @@ function useMediaQuery(query: string) {
 
 export default function Home() {
   const setStoryboard = useEditorStore(state => state.setStoryboard);
+  const setZoom = useEditorStore(state => state.setZoom);
   const selectedPanelId = useEditorStore(state => state.selectedPanelId);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const isDesktop = useMediaQuery('(min-width: 900px)');
+
+  // Auto-fit zoom for mobile: fit 800px canvas into screen width
+  // Uses the smallest reliable viewport measurement to avoid inflated values
+  // from content overflow or DevTools quirks.
+  useEffect(() => {
+    const computeMobileZoom = () => {
+      if (isDesktop) {
+        setZoom(1.0);
+        return;
+      }
+      const canvasWidth = 800;
+      // Use the smallest of several width measurements to get the true
+      // device viewport width, regardless of content overflow or layout.
+      const viewportWidth = Math.min(
+        window.innerWidth,
+        document.documentElement.clientWidth,
+        window.screen?.width ?? Infinity
+      );
+      const fitZoom = Math.round((viewportWidth / canvasWidth) * 100) / 100;
+      setZoom(Math.min(fitZoom, 1.0));
+    };
+
+    computeMobileZoom();
+
+    // Recalculate on resize (e.g. orientation change)
+    window.addEventListener('resize', computeMobileZoom);
+    return () => window.removeEventListener('resize', computeMobileZoom);
+  }, [isDesktop, setZoom]);
 
   useEffect(() => {
     async function loadStoryboard() {

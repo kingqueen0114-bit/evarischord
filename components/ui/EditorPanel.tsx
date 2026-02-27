@@ -167,13 +167,13 @@ export default function EditorPanel() {
     return (
         <div className="w-full h-full flex flex-col bg-[var(--surface)] text-[var(--color-text-main)] overflow-hidden">
             {/* Tabs */}
-            <div className="flex border-b border-[var(--border)] overflow-x-auto hidden-scrollbar">
+            <div className="flex border-b border-[var(--border)] overflow-x-auto hidden-scrollbar flex-shrink-0">
                 {tabs.map(tab => (
                     <button
                         key={tab.id}
                         onClick={() => setEditTab(tab.id as any)}
                         className={`
-              flex-1 py-3 px-2 text-sm font-bold min-w-max transition-colors
+              flex-1 py-2 sm:py-3 px-1.5 sm:px-2 text-xs sm:text-sm font-bold min-w-max transition-colors
               ${editTab === tab.id
                                 ? 'text-[var(--accent)] border-b-2 border-[var(--accent)]'
                                 : 'text-[var(--color-text-dim)] hover:text-white hover:bg-[#2a2a33]'}
@@ -185,13 +185,13 @@ export default function EditorPanel() {
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-6">
-                {/* Panel Info Header */}
-                <div className="pb-4 border-b border-[var(--border)]">
-                    <h2 className="text-lg font-bold mb-1">
+            <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-6">
+                {/* Panel Info Header - compact on mobile */}
+                <div className="pb-2 sm:pb-4 border-b border-[var(--border)]">
+                    <h2 className="text-sm sm:text-lg font-bold">
                         {panel.label}: {panel.section}
                     </h2>
-                    <p className="text-sm text-[var(--color-text-dim)] line-clamp-2">
+                    <p className="text-xs sm:text-sm text-[var(--color-text-dim)] line-clamp-1 sm:line-clamp-2">
                         {panel.description}
                     </p>
                 </div>

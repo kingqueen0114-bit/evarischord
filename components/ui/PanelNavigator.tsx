@@ -9,8 +9,8 @@ export default function PanelNavigator() {
     if (!storyboard) return null;
 
     return (
-        <div className="w-full overflow-x-auto bg-[var(--surface)] border-b border-[var(--border)] sticky top-14 z-40 hidden-scrollbar">
-            <div className="flex px-4 py-2 gap-2 min-w-max">
+        <div className="w-full overflow-x-auto bg-[var(--surface)] border-b border-[var(--border)] sticky top-12 sm:top-14 z-40 hidden-scrollbar flex-shrink-0">
+            <div className="flex px-2 sm:px-4 py-1.5 sm:py-2 gap-1.5 sm:gap-2 min-w-max">
                 {storyboard.panels.map((panel) => {
                     const isSelected = selectedPanelId === panel.id;
                     return (
@@ -22,7 +22,7 @@ export default function PanelNavigator() {
                                 document.getElementById(`panel-${panel.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                             }}
                             className={`
-                px-3 py-1.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap
+                px-2 sm:px-3 py-1 sm:py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors whitespace-nowrap
                 ${isSelected
                                     ? 'bg-[var(--accent)] text-white'
                                     : 'bg-[var(--background)] text-[var(--color-text-dim)] hover:text-white hover:bg-[#2a2a33] border border-[var(--border)]'}
