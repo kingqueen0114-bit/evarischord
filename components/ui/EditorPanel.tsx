@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useEditorStore } from '@/stores/editorStore';
-import { Bubble, SfxPreset } from '@/types/storyboard';
+import { Bubble, SfxPreset, SubPanelClipboard } from '@/types/storyboard';
 
 const BUILTIN_PRESETS: SfxPreset[] = [
     {
@@ -68,7 +68,11 @@ export default function EditorPanel() {
         customSfxPresets,
         loadCustomSfxPresets,
         addCustomSfxPreset,
-        deleteCustomSfxPreset
+        deleteCustomSfxPreset,
+        subPanelClipboard,
+        copySubPanel,
+        pasteSubPanel,
+        clearSubPanel
     } = useEditorStore();
 
     useEffect(() => {
@@ -761,6 +765,10 @@ export default function EditorPanel() {
                         panel={panel}
                         selectedSubPanelId={selectedSubPanelId}
                         replaceImage={replaceImage}
+                        subPanelClipboard={subPanelClipboard}
+                        copySubPanel={copySubPanel}
+                        pasteSubPanel={pasteSubPanel}
+                        clearSubPanel={clearSubPanel}
                     />
                 )}
 
@@ -1022,10 +1030,14 @@ function PromptTabContent({ panel, storyboard }: { panel: any, storyboard: any }
 }
 
 // Image tab: replace panel image, view history, restore previous versions
-function ImageTabContent({ panel, selectedSubPanelId, replaceImage }: {
+function ImageTabContent({ panel, selectedSubPanelId, replaceImage, subPanelClipboard, copySubPanel, pasteSubPanel, clearSubPanel }: {
     panel: any;
     selectedSubPanelId: string | null;
     replaceImage: (panelId: string, newSrc: string, subPanelId?: string) => void;
+    subPanelClipboard: SubPanelClipboard | null;
+    copySubPanel: (panelId: string, subPanelId: string) => void;
+    pasteSubPanel: (panelId: string, subPanelId: string) => void;
+    clearSubPanel: (panelId: string, subPanelId: string) => void;
 }) {
     const [uploading, setUploading] = React.useState(false);
 
@@ -1107,6 +1119,50 @@ function ImageTabContent({ panel, selectedSubPanelId, replaceImage }: {
                     現在の画像: {panel.label}{subPanel ? ` (${subPanel.id})` : ''}
                 </div>
             </div>
+
+            {/* Sub-panel Actions (Copy/Paste/Delete) */}
+            {panel.sub_panels && subPanel && (
+                <div className="space-y-2">
+                    <h3 className="text-xs sm:text-sm font-bold text-[var(--color-text-dim)]">コマ操作</h3>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => copySubPanel(panel.id, subPanel.id)}
+                            className="flex-1 py-2 text-xs sm:text-sm bg-[var(--background)] hover:bg-[#2a2a33] border border-[var(--border)] rounded-md font-bold transition-colors"
+                        >
+                            📋 コピー
+                        </button>
+                        <button
+                            onClick={() => {
+                                if (!subPanelClipboard) return;
+                                if (subPanel.bubbles.length > 0 || subPanel.sfx.length > 0 || subPanel.override_image) {
+                                    if (!confirm('このコマの内容を上書きしますか？')) return;
+                                }
+                                pasteSubPanel(panel.id, subPanel.id);
+                            }}
+                            disabled={!subPanelClipboard}
+                            className="flex-1 py-2 text-xs sm:text-sm bg-[var(--background)] hover:bg-[#2a2a33] border border-[var(--border)] rounded-md font-bold transition-colors disabled:opacity-30"
+                        >
+                            📥 ペースト
+                        </button>
+                        <button
+                            onClick={() => {
+                                if (confirm('このコマの内容をクリアしますか？')) {
+                                    clearSubPanel(panel.id, subPanel.id);
+                                }
+                            }}
+                            disabled={!subPanel.override_image && subPanel.bubbles.length === 0 && subPanel.sfx.length === 0}
+                            className="flex-1 py-2 text-xs sm:text-sm bg-[var(--danger)]/20 hover:bg-[var(--danger)]/30 border border-[var(--danger)]/50 text-[var(--danger)] rounded-md font-bold transition-colors disabled:opacity-30"
+                        >
+                            🗑 削除
+                        </button>
+                    </div>
+                    {subPanelClipboard && (
+                        <p className="text-[10px] text-[var(--color-text-dim)]">
+                            クリップボード: {subPanelClipboard.sourceSubPanelId} からコピー済み
+                        </p>
+                    )}
+                </div>
+            )}
 
             {/* Upload button */}
             <label className={`

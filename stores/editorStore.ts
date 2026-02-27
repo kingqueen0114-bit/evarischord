@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Storyboard, Panel, Bubble, Sfx, ToolMode, EditTab, SfxPreset } from '@/types/storyboard';
+import { Storyboard, Panel, Bubble, Sfx, ToolMode, EditTab, SfxPreset, SubPanelClipboard } from '@/types/storyboard';
 
 interface EditorState {
     // Data
@@ -46,6 +46,12 @@ interface EditorState {
     updateGutterColorAll: (color: string) => void;
     updatePanelSize: (panelId: string, heightRatio: number, cropOffsetY: number, subPanelId?: string) => void;
 
+    // Sub-panel clipboard
+    subPanelClipboard: SubPanelClipboard | null;
+    copySubPanel: (panelId: string, subPanelId: string) => void;
+    pasteSubPanel: (panelId: string, subPanelId: string) => void;
+    clearSubPanel: (panelId: string, subPanelId: string) => void;
+
     // Undo/Redo
     undo: () => void;
     redo: () => void;
@@ -83,6 +89,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     editPanelOpen: false,
     zoom: 1.0,
     customSfxPresets: [],
+    subPanelClipboard: null,
 
     history: [],
     historyIndex: -1,
@@ -445,6 +452,98 @@ export const useEditorStore = create<EditorState>((set, get) => ({
                 }
 
                 return { ...p, display_height_ratio: heightRatio, crop_offset_y: cropOffsetY };
+            })
+        };
+        return pushHistory(state, newSb);
+    }),
+
+    copySubPanel: (panelId, subPanelId) => set((state) => {
+        if (!state.storyboard) return state;
+        const panel = state.storyboard.panels.find(p => p.id === panelId);
+        if (!panel?.sub_panels) return state;
+        const subPanel = panel.sub_panels.find(sp => sp.id === subPanelId);
+        if (!subPanel) return state;
+
+        const cloned = JSON.parse(JSON.stringify({
+            override_image: subPanel.override_image,
+            bubbles: subPanel.bubbles,
+            sfx: subPanel.sfx,
+            display_height_ratio: subPanel.display_height_ratio,
+            crop_offset_y: subPanel.crop_offset_y,
+        }));
+
+        return {
+            subPanelClipboard: {
+                ...cloned,
+                sourceSubPanelId: subPanelId,
+                copiedAt: Date.now(),
+            }
+        };
+    }),
+
+    pasteSubPanel: (panelId, subPanelId) => set((state) => {
+        if (!state.storyboard || !state.subPanelClipboard) return state;
+        const panel = state.storyboard.panels.find(p => p.id === panelId);
+        if (!panel?.sub_panels) return state;
+        const subPanel = panel.sub_panels.find(sp => sp.id === subPanelId);
+        if (!subPanel) return state;
+
+        const clip = JSON.parse(JSON.stringify(state.subPanelClipboard)) as SubPanelClipboard;
+        const now = Date.now();
+
+        const newBubbles = clip.bubbles.map((b: Bubble, index: number) => ({
+            ...b,
+            id: `paste-bubble-${now}-${index}`,
+        }));
+        const newSfx = clip.sfx.map((s: Sfx, index: number) => ({
+            ...s,
+            id: `paste-sfx-${now}-${index}`,
+        }));
+
+        const newSb = {
+            ...state.storyboard,
+            panels: state.storyboard.panels.map(p => {
+                if (p.id !== panelId) return p;
+                return {
+                    ...p,
+                    sub_panels: p.sub_panels!.map(sp => {
+                        if (sp.id !== subPanelId) return sp;
+                        return {
+                            ...sp,
+                            override_image: clip.override_image,
+                            bubbles: newBubbles,
+                            sfx: newSfx,
+                            display_height_ratio: clip.display_height_ratio,
+                            crop_offset_y: clip.crop_offset_y,
+                        };
+                    })
+                };
+            })
+        };
+        return pushHistory(state, newSb);
+    }),
+
+    clearSubPanel: (panelId, subPanelId) => set((state) => {
+        if (!state.storyboard) return state;
+        const newSb = {
+            ...state.storyboard,
+            panels: state.storyboard.panels.map(p => {
+                if (p.id !== panelId) return p;
+                if (!p.sub_panels) return p;
+                return {
+                    ...p,
+                    sub_panels: p.sub_panels.map(sp => {
+                        if (sp.id !== subPanelId) return sp;
+                        return {
+                            ...sp,
+                            override_image: undefined,
+                            bubbles: [],
+                            sfx: [],
+                            display_height_ratio: undefined,
+                            crop_offset_y: undefined,
+                        };
+                    })
+                };
             })
         };
         return pushHistory(state, newSb);

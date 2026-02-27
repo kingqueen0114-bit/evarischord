@@ -72,6 +72,17 @@ export interface SubPanel {
   sfx: Sfx[];
 }
 
+/** Clipboard content for sub-panel copy/paste (excludes positional data) */
+export interface SubPanelClipboard {
+  override_image?: PanelImage;
+  bubbles: Bubble[];
+  sfx: Sfx[];
+  display_height_ratio?: number;
+  crop_offset_y?: number;
+  sourceSubPanelId: string;
+  copiedAt: number;
+}
+
 export interface PanelImage {
   src: string;
   original_size?: Size;
