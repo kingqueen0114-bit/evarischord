@@ -61,6 +61,10 @@ export default function EditorPanel() {
         updateBubble,
         addBubble,
         deleteBubble,
+        replaceImage,
+        updateGutter,
+        updateGutterColorAll,
+        updatePanel,
         customSfxPresets,
         loadCustomSfxPresets,
         addCustomSfxPreset,
@@ -154,6 +158,8 @@ export default function EditorPanel() {
         { id: 'text', label: '🔤 セリフ' },
         { id: 'bubble', label: '💬 吹き出し' },
         { id: 'sfx', label: '🔊 SFX' },
+        { id: 'image', label: '📷 画像' },
+        { id: 'gutter', label: '↕ ガター' },
         { id: 'size', label: '📐 サイズ' },
         { id: 'prompt', label: '✨ 生成' }
     ] as const;
@@ -750,6 +756,23 @@ export default function EditorPanel() {
                     </div>
                 )}
 
+                {editTab === 'image' && (
+                    <ImageTabContent
+                        panel={panel}
+                        selectedSubPanelId={selectedSubPanelId}
+                        replaceImage={replaceImage}
+                    />
+                )}
+
+                {editTab === 'gutter' && (
+                    <GutterTabContent
+                        panel={panel}
+                        selectedSubPanelId={selectedSubPanelId}
+                        updateGutter={updateGutter}
+                        updateGutterColorAll={updateGutterColorAll}
+                    />
+                )}
+
                 {editTab === 'size' && (() => {
                     return <SizeTabContent panel={panel} />;
                 })()}
@@ -961,8 +984,8 @@ function PromptTabContent({ panel, storyboard }: { panel: any, storyboard: any }
                 <label className="block text-xs text-[var(--color-text-dim)] mb-1">シーン指定・ディレクション</label>
                 <textarea
                     value={panel.loveart_prompt_notes}
-                    readOnly // for MVP phase 2, make it editable in Phase 3
-                    className="w-full h-24 bg-[var(--background)] border border-[var(--border)] rounded p-2 text-sm text-[var(--color-text-dim)] resize-none"
+                    onChange={(e) => useEditorStore.getState().updatePanel(panel.id, { loveart_prompt_notes: e.target.value })}
+                    className="w-full h-24 bg-[var(--background)] border border-[var(--border)] rounded p-2 text-sm text-[var(--color-text-dim)] resize-none focus:outline-none focus:border-[var(--accent)]"
                     placeholder="特になし"
                 />
             </div>
@@ -994,6 +1017,275 @@ function PromptTabContent({ panel, storyboard }: { panel: any, storyboard: any }
                     </button>
                 </div>
             )}
+        </div>
+    );
+}
+
+// Image tab: replace panel image, view history, restore previous versions
+function ImageTabContent({ panel, selectedSubPanelId, replaceImage }: {
+    panel: any;
+    selectedSubPanelId: string | null;
+    replaceImage: (panelId: string, newSrc: string, subPanelId?: string) => void;
+}) {
+    const [uploading, setUploading] = React.useState(false);
+
+    // Determine current image source and history
+    const isSplit = panel.sub_panels && panel.sub_panels.length > 0;
+    const subPanel = isSplit && selectedSubPanelId
+        ? panel.sub_panels.find((sp: any) => sp.id === selectedSubPanelId)
+        : null;
+
+    const currentSrc = subPanel?.override_image?.src || panel.image.src;
+    const imageHistory = subPanel?.override_image?.history || panel.image.history || [];
+
+    const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setUploading(true);
+
+        try {
+            // Client-side resize to 800px width
+            const img = new Image();
+            const reader = new FileReader();
+            reader.onload = () => {
+                img.onload = async () => {
+                    const canvas = document.createElement('canvas');
+                    const targetWidth = 800;
+                    const scale = targetWidth / img.width;
+                    canvas.width = targetWidth;
+                    canvas.height = img.height * scale;
+                    const ctx = canvas.getContext('2d')!;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                    canvas.toBlob(async (blob) => {
+                        if (!blob) { setUploading(false); return; }
+                        const formData = new FormData();
+                        formData.append('file', blob, `${panel.id}.png`);
+                        formData.append('panelId', subPanel ? subPanel.id : panel.id);
+
+                        try {
+                            const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                            const data = await res.json();
+                            if (data.src) {
+                                replaceImage(panel.id, data.src, selectedSubPanelId || undefined);
+                            }
+                        } catch (err) {
+                            console.error('Upload failed:', err);
+                        } finally {
+                            setUploading(false);
+                        }
+                    }, 'image/png');
+                };
+                img.src = reader.result as string;
+            };
+            reader.readAsDataURL(file);
+        } catch (err) {
+            console.error('File processing failed:', err);
+            setUploading(false);
+        }
+
+        // Reset input
+        e.target.value = '';
+    };
+
+    const handleRestore = (historySrc: string) => {
+        replaceImage(panel.id, historySrc, selectedSubPanelId || undefined);
+    };
+
+    return (
+        <div className="space-y-4">
+            <h3 className="font-bold">画像差し替え</h3>
+
+            {/* Current image preview */}
+            <div className="relative rounded-lg overflow-hidden border border-[var(--border)] bg-black">
+                <img
+                    src={currentSrc}
+                    alt={panel.label}
+                    className="w-full h-auto max-h-48 object-contain"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-xs text-center py-1 text-[var(--color-text-dim)]">
+                    現在の画像: {panel.label}{subPanel ? ` (${subPanel.id})` : ''}
+                </div>
+            </div>
+
+            {/* Upload button */}
+            <label className={`
+                w-full py-3 flex items-center justify-center gap-2
+                bg-[var(--accent)]/10 border-2 border-dashed border-[var(--accent)]/40
+                rounded-lg cursor-pointer hover:bg-[var(--accent)]/20 transition-colors font-bold text-sm
+                ${uploading ? 'opacity-50 pointer-events-none' : ''}
+            `}>
+                {uploading ? '⏳ アップロード中...' : '📷 新しい画像を選択'}
+                <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileSelect}
+                    disabled={uploading}
+                />
+            </label>
+
+            {/* Image history */}
+            {imageHistory.length > 0 && (
+                <div>
+                    <label className="block text-xs text-[var(--color-text-dim)] mb-2">差し替え履歴 ({imageHistory.length}件)</label>
+                    <div className="grid grid-cols-3 gap-2">
+                        {[...imageHistory].reverse().map((src: string, i: number) => (
+                            <div key={i} className="relative group rounded overflow-hidden border border-[var(--border)] bg-black">
+                                <img
+                                    src={src}
+                                    alt={`履歴 ${imageHistory.length - i}`}
+                                    className="w-full h-20 object-cover"
+                                />
+                                <button
+                                    onClick={() => handleRestore(src)}
+                                    className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-xs font-bold text-white"
+                                >
+                                    元に戻す
+                                </button>
+                                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-[10px] text-center py-0.5 text-gray-400">
+                                    v{imageHistory.length - i}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            <p className="text-xs text-[var(--color-text-dim)] mt-2">
+                画像は自動的に幅800pxにリサイズされます。<br />
+                画像の加工・編集は外部ツールで行ってください。
+            </p>
+        </div>
+    );
+}
+
+// Gutter tab: gap size slider, color picker, update all
+function GutterTabContent({ panel, selectedSubPanelId, updateGutter, updateGutterColorAll }: {
+    panel: any;
+    selectedSubPanelId: string | null;
+    updateGutter: (panelId: string, gap: number, color?: string, subPanelId?: string) => void;
+    updateGutterColorAll: (color: string) => void;
+}) {
+    const isSplit = panel.sub_panels && panel.sub_panels.length > 0;
+    const subPanel = isSplit && selectedSubPanelId
+        ? panel.sub_panels.find((sp: any) => sp.id === selectedSubPanelId)
+        : null;
+
+    const currentGap = subPanel ? subPanel.gap_before : panel.gap_before;
+    const currentColor = subPanel ? subPanel.gap_color : panel.gap_color;
+
+    const handleGapChange = (val: number) => {
+        updateGutter(panel.id, val, undefined, selectedSubPanelId || undefined);
+    };
+
+    const handleColorChange = (color: string) => {
+        updateGutter(panel.id, currentGap, color, selectedSubPanelId || undefined);
+    };
+
+    return (
+        <div className="space-y-6">
+            <h3 className="font-bold">ガター設定</h3>
+
+            {/* Gap size slider */}
+            <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                    <label className="text-xs text-[var(--color-text-dim)]">上ガターの高さ</label>
+                    <span className="text-xs font-mono text-[var(--accent)]">{currentGap}px</span>
+                </div>
+                <input
+                    type="range"
+                    min="0" max="200" step="1"
+                    value={currentGap}
+                    onChange={(e) => handleGapChange(Number(e.target.value))}
+                    className="w-full accent-[var(--accent)]"
+                />
+                <div className="flex justify-between text-[10px] text-gray-500 px-1">
+                    <span>0px</span>
+                    <span>100px</span>
+                    <span>200px</span>
+                </div>
+            </div>
+
+            {/* Quick gap presets */}
+            <div>
+                <label className="block text-xs text-[var(--color-text-dim)] mb-2">ガターサイズプリセット</label>
+                <div className="grid grid-cols-4 gap-2">
+                    {[0, 10, 20, 40, 60, 80, 100, 150].map(px => (
+                        <button
+                            key={px}
+                            onClick={() => handleGapChange(px)}
+                            className={`py-2 text-xs rounded border transition-colors ${currentGap === px
+                                ? 'bg-[var(--accent)]/20 border-[var(--accent)] text-[var(--accent)] font-bold'
+                                : 'bg-[var(--background)] border-[var(--border)] hover:bg-[#2a2a33]'
+                            }`}
+                        >
+                            {px}px
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Color picker */}
+            <div className="space-y-2 pt-4 border-t border-[var(--border)]">
+                <label className="block text-xs text-[var(--color-text-dim)]">ガター色</label>
+                <div className="grid grid-cols-3 gap-2 mb-3">
+                    <button
+                        onClick={() => handleColorChange('#ffffff')}
+                        className={`py-2 text-xs rounded border ${currentColor === '#ffffff'
+                            ? 'border-[var(--accent)] ring-1 ring-[var(--accent)]' : 'border-[var(--border)]'
+                        } bg-white text-black font-bold`}
+                    >
+                        白
+                    </button>
+                    <button
+                        onClick={() => handleColorChange('#000000')}
+                        className={`py-2 text-xs rounded border ${currentColor === '#000000'
+                            ? 'border-[var(--accent)] ring-1 ring-[var(--accent)]' : 'border-[var(--border)]'
+                        } bg-black text-white font-bold`}
+                    >
+                        黒
+                    </button>
+                    <div className="relative">
+                        <input
+                            type="color"
+                            value={currentColor}
+                            onChange={(e) => handleColorChange(e.target.value)}
+                            className="w-full h-full cursor-pointer rounded border border-[var(--border)] absolute inset-0 opacity-0"
+                        />
+                        <div
+                            className={`w-full h-full py-2 text-xs rounded border text-center font-bold ${currentColor !== '#ffffff' && currentColor !== '#000000'
+                                ? 'border-[var(--accent)] ring-1 ring-[var(--accent)]' : 'border-[var(--border)]'
+                            }`}
+                            style={{ backgroundColor: currentColor, color: currentColor === '#ffffff' || currentColor.toLowerCase() === '#fff' ? '#000' : '#fff' }}
+                        >
+                            カスタム
+                        </div>
+                    </div>
+                </div>
+
+                {/* Current color display */}
+                <div className="flex items-center gap-2">
+                    <div
+                        className="w-6 h-6 rounded border border-[var(--border)]"
+                        style={{ backgroundColor: currentColor }}
+                    />
+                    <span className="text-xs font-mono text-[var(--color-text-dim)]">{currentColor}</span>
+                </div>
+            </div>
+
+            {/* Apply to all */}
+            <div className="pt-4 border-t border-[var(--border)]">
+                <button
+                    onClick={() => updateGutterColorAll(currentColor)}
+                    className="w-full py-2 text-sm bg-[var(--surface)] border border-[var(--border)] rounded-md font-bold hover:bg-[#2a2a33] transition-colors"
+                >
+                    この色を全パネルに適用
+                </button>
+                <p className="text-[10px] text-[var(--color-text-dim)] mt-1 text-center">
+                    現在のガター色 ({currentColor}) を全パネルに一括適用します
+                </p>
+            </div>
         </div>
     );
 }
