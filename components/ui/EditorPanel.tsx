@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useEditorStore } from '@/stores/editorStore';
 import { Bubble, SfxPreset, SubPanelClipboard } from '@/types/storyboard';
+import { validateText, validatePanel, ValidationWarning } from '@/lib/validation';
 
 const BUILTIN_PRESETS: SfxPreset[] = [
     {
@@ -251,6 +252,7 @@ export default function EditorPanel() {
                                         className="w-full h-32 bg-[var(--background)] border border-[var(--border)] rounded p-2 focus:outline-none focus:border-[var(--accent)] resize-none"
                                         placeholder="セリフを入力..."
                                     />
+                                    <ValidationWarnings text={selectedBubble.text} />
                                     <div className="flex items-center gap-2 mt-2">
                                         <label className="text-xs text-[var(--color-text-dim)]">サイズ ({selectedBubble.fontSize})</label>
                                         <input
@@ -954,6 +956,39 @@ function SizeTabContent({ panel }: { panel: any }) {
     );
 }
 
+// Reusable inline validation warnings display
+function ValidationWarnings({ text }: { text: string }) {
+    const warnings = useMemo(() => validateText(text), [text]);
+    if (warnings.length === 0) return null;
+    return (
+        <div className="mt-1 space-y-1">
+            {warnings.map((w, i) => (
+                <div key={i} className="flex items-start gap-1.5 text-xs text-amber-400 bg-amber-400/10 border border-amber-400/20 rounded px-2 py-1">
+                    <span className="flex-shrink-0 mt-px">&#9888;</span>
+                    <span><strong>&ldquo;{w.match}&rdquo;</strong> &mdash; {w.message}</span>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+// Panel-level validation warnings (checks all text fields in the panel)
+function PanelValidationWarnings({ panel }: { panel: any }) {
+    const warnings = useMemo(() => validatePanel(panel), [panel]);
+    if (warnings.length === 0) return null;
+    return (
+        <div className="space-y-1">
+            <label className="block text-xs font-bold text-amber-400">&#9888; 設定整合チェック</label>
+            {warnings.map((w, i) => (
+                <div key={i} className="flex items-start gap-1.5 text-xs text-amber-400 bg-amber-400/10 border border-amber-400/20 rounded px-2 py-1">
+                    <span className="flex-shrink-0 mt-px">&#9888;</span>
+                    <span><strong>&ldquo;{w.match}&rdquo;</strong> &mdash; {w.message}</span>
+                </div>
+            ))}
+        </div>
+    );
+}
+
 // Inner component to handle prompt tab state cleanly
 function PromptTabContent({ panel, storyboard }: { panel: any, storyboard: any }) {
     const [generating, setGenerating] = React.useState(false);
@@ -997,6 +1032,8 @@ function PromptTabContent({ panel, storyboard }: { panel: any, storyboard: any }
                     placeholder="特になし"
                 />
             </div>
+
+            <PanelValidationWarnings panel={panel} />
 
             <button
                 onClick={handleGenerate}
