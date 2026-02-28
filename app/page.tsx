@@ -60,12 +60,30 @@ export default function Home() {
   useEffect(() => {
     async function loadStoryboard() {
       try {
-        const res = await fetch('/api/storyboard');
-        if (!res.ok) throw new Error('Failed to load storyboard');
-        const data = await res.json();
+        // Try localStorage first (for Vercel deployment / offline)
+        const stored = useEditorStore.getState().loadFromStorage();
+        if (stored) {
+          setStoryboard(stored);
+          setLoading(false);
+          return;
+        }
+
+        // Fallback: fetch from static file (works on Vercel)
+        const res = await fetch('/ep001-storyboard.json');
+        if (res.ok) {
+          const data = await res.json();
+          setStoryboard(data);
+          setLoading(false);
+          return;
+        }
+
+        // Try API route as last resort (works on local dev)
+        const apiRes = await fetch('/api/storyboard');
+        if (!apiRes.ok) throw new Error('Failed to load storyboard');
+        const data = await apiRes.json();
         setStoryboard(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
+        setError(err instanceof Error ? err.message : 'All storyboard sources failed');
       } finally {
         setLoading(false);
       }

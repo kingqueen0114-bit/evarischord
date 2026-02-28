@@ -15,6 +15,15 @@ interface EditorState {
     editPanelOpen: boolean;
     zoom: number;
     customSfxPresets: SfxPreset[];
+    // Context menu
+    contextMenu: {
+        x: number;
+        y: number;
+        panelId: string;
+        subPanelId?: string;
+        bubbleId?: string;
+        sfxId?: string;
+    } | null;
 
     // Undo/Redo
     history: string[];     // JSON snapshots
@@ -30,6 +39,10 @@ interface EditorState {
     setEditTab: (tab: EditTab) => void;
     setEditPanelOpen: (open: boolean) => void;
     setZoom: (zoom: number) => void;
+    showContextMenu: (menu: { x: number; y: number; panelId: string; subPanelId?: string; bubbleId?: string; sfxId?: string }) => void;
+    hideContextMenu: () => void;
+    loadFromStorage: () => Storyboard | null;
+    saveToStorage: () => void;
 
     // Edit operations (all push to history first)
     updatePanel: (panelId: string, updates: Partial<Panel>) => void;
@@ -68,12 +81,35 @@ interface EditorState {
     getAllPanels: () => Panel[];
 }
 
+const STORAGE_KEY = 'evaris_storyboard_data';
+
+const saveToLocalStorage = (sb: Storyboard) => {
+    if (typeof window === 'undefined') return;
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(sb));
+    } catch (e) {
+        console.warn('Failed to save to localStorage:', e);
+    }
+};
+
+const loadFromLocalStorage = (): Storyboard | null => {
+    if (typeof window === 'undefined') return null;
+    try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        if (data) return JSON.parse(data);
+    } catch (e) {
+        console.warn('Failed to load from localStorage:', e);
+    }
+    return null;
+};
+
 const pushHistory = (state: EditorState, newStoryboard: Storyboard) => {
     const currentSnap = JSON.stringify(newStoryboard);
     // Remove future history if we're not at the end
     const history = state.history.slice(0, state.historyIndex + 1);
     history.push(currentSnap);
     if (history.length > 50) history.shift(); // Max 50 history entries
+    saveToLocalStorage(newStoryboard);
     return { history, historyIndex: history.length - 1, storyboard: newStoryboard };
 };
 
@@ -90,12 +126,14 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     zoom: 1.0,
     customSfxPresets: [],
     subPanelClipboard: null,
+    contextMenu: null,
 
     history: [],
     historyIndex: -1,
 
     setStoryboard: (sb) => set((state) => {
         const snap = JSON.stringify(sb);
+        saveToLocalStorage(sb);
         return { storyboard: sb, history: [snap], historyIndex: 0 };
     }),
 
@@ -188,6 +226,13 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     setEditTab: (tab) => set({ editTab: tab }),
     setEditPanelOpen: (open) => set({ editPanelOpen: open }),
     setZoom: (zoom) => set({ zoom }),
+    showContextMenu: (menu) => set({ contextMenu: menu }),
+    hideContextMenu: () => set({ contextMenu: null }),
+    loadFromStorage: () => loadFromLocalStorage(),
+    saveToStorage: () => {
+        const sb = get().storyboard;
+        if (sb) saveToLocalStorage(sb);
+    },
 
     updatePanel: (panelId, updates) => set((state) => {
         if (!state.storyboard) return state;

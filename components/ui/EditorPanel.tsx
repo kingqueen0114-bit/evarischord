@@ -1069,24 +1069,35 @@ function ImageTabContent({ panel, selectedSubPanelId, replaceImage, subPanelClip
                     const ctx = canvas.getContext('2d')!;
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-                    canvas.toBlob(async (blob) => {
-                        if (!blob) { setUploading(false); return; }
-                        const formData = new FormData();
-                        formData.append('file', blob, `${panel.id}.png`);
-                        formData.append('panelId', subPanel ? subPanel.id : panel.id);
+                    // Convert canvas to data URL for immediate use (works on Vercel too)
+                    const dataUrl = canvas.toDataURL('image/png', 0.9);
+                    const subPanelId = selectedSubPanelId || undefined;
+                    replaceImage(panel.id, dataUrl, subPanelId);
+                    setUploading(false);
 
-                        try {
-                            const res = await fetch('/api/upload', { method: 'POST', body: formData });
-                            const data = await res.json();
-                            if (data.src) {
-                                replaceImage(panel.id, data.src, selectedSubPanelId || undefined);
+                    // Also try server upload in background (for local dev with persistent storage)
+                    try {
+                        canvas.toBlob(async (blob) => {
+                            if (!blob) return;
+                            const formData = new FormData();
+                            formData.append('file', blob, `${subPanel ? subPanel.id : panel.id}.png`);
+                            formData.append('panelId', subPanel ? subPanel.id : panel.id);
+                            try {
+                                const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                                if (res.ok) {
+                                    const data = await res.json();
+                                    if (data.src) {
+                                        // Update to server URL if available (more persistent)
+                                        replaceImage(panel.id, data.src, subPanelId);
+                                    }
+                                }
+                            } catch {
+                                // Server not available (Vercel), data URL already applied
                             }
-                        } catch (err) {
-                            console.error('Upload failed:', err);
-                        } finally {
-                            setUploading(false);
-                        }
-                    }, 'image/png');
+                        }, 'image/png', 0.9);
+                    } catch {
+                        // Already using data URL
+                    }
                 };
                 img.src = reader.result as string;
             };

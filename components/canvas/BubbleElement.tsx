@@ -238,6 +238,7 @@ export default function BubbleElement({ bubble, panelId, subPanelId, selected, p
         <Group>
             <Group
                 ref={shapeRef}
+                name={`bubble:${bubble.id}`}
                 x={x}
                 y={y}
                 draggable

@@ -146,6 +146,7 @@ export default function SfxElement({ sfx, panelId, subPanelId, selected, panelWi
         <React.Fragment>
             <Group
                 ref={textRef}
+                name={`sfx:${sfx.id}`}
                 x={x}
                 y={y}
                 draggable

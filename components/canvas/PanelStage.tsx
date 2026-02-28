@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Stage, Layer, Rect, Image as KonvaImage, Group } from 'react-konva';
 import { Panel, SubPanel } from '@/types/storyboard';
 import { useEditorStore } from '@/stores/editorStore';
@@ -122,6 +122,54 @@ export default function PanelStage({
         loadAllImages();
     }, [panel, width]); // Only completely rebuild layout if the panel changes significantly or width changes
 
+    // Long-press for mobile context menu
+    const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const longPressPos = useRef<{ x: number; y: number } | null>(null);
+
+    const clearLongPress = useCallback(() => {
+        if (longPressTimer.current) {
+            clearTimeout(longPressTimer.current);
+            longPressTimer.current = null;
+        }
+    }, []);
+
+    const showContextMenuAt = useCallback((clientX: number, clientY: number, target: any) => {
+        let node = target;
+        let bubbleId: string | undefined;
+        let sfxId: string | undefined;
+
+        while (node && node.getStage && node !== node.getStage()) {
+            const name = node.name ? node.name() : '';
+            if (name.startsWith('bubble:')) { bubbleId = name.replace('bubble:', ''); break; }
+            if (name.startsWith('sfx:')) { sfxId = name.replace('sfx:', ''); break; }
+            node = node.parent;
+        }
+
+        const stage = target.getStage ? target.getStage() : null;
+        const pos = stage?.getPointerPosition();
+        const stageY = pos?.y ?? 0;
+        let clickedSubPanelId: string | undefined;
+
+        for (const item of layout.subPanels) {
+            if (item.isMock) continue;
+            const top = item.gapY;
+            const bottom = item.imageY + item.imageH;
+            if (stageY >= top && stageY < bottom) {
+                clickedSubPanelId = (item.sp as any).id;
+                break;
+            }
+        }
+
+        useEditorStore.getState().showContextMenu({
+            x: clientX,
+            y: clientY,
+            panelId: panel.id,
+            subPanelId: clickedSubPanelId,
+            bubbleId,
+            sfxId,
+        });
+    }, [layout, panel.id]);
+
     const handleBackgroundClick = (isMock: boolean, spId: string) => {
         selectPanel(panel.id);
         if (!isMock) selectSubPanel(spId);
@@ -132,11 +180,39 @@ export default function PanelStage({
         setEditTab('size');
     };
 
+    const handleContextMenu = (e: any) => {
+        e.evt.preventDefault();
+        showContextMenuAt(e.evt.clientX, e.evt.clientY, e.target);
+    };
+
     return (
         <Stage
             width={width}
             height={layout.totalHeight}
             pixelRatio={pixelRatio}
+            onContextMenu={handleContextMenu}
+            onTouchStart={(e: any) => {
+                clearLongPress();
+                const touch = e.evt.touches?.[0];
+                if (!touch) return;
+                longPressPos.current = { x: touch.clientX, y: touch.clientY };
+                const target = e.target;
+                longPressTimer.current = setTimeout(() => {
+                    if (longPressPos.current) {
+                        showContextMenuAt(longPressPos.current.x, longPressPos.current.y, target);
+                    }
+                    longPressTimer.current = null;
+                }, 500);
+            }}
+            onTouchMove={(e: any) => {
+                if (!longPressTimer.current || !longPressPos.current) return;
+                const touch = e.evt.touches?.[0];
+                if (!touch) return;
+                const dx = touch.clientX - longPressPos.current.x;
+                const dy = touch.clientY - longPressPos.current.y;
+                if (dx * dx + dy * dy > 100) clearLongPress(); // Cancel if moved > 10px
+            }}
+            onTouchEnd={() => clearLongPress()}
             onPointerDown={(e) => {
                 // Global fallback if clicked entirely outside bounds
                 if (e.target === e.target.getStage()) {
