@@ -58,6 +58,17 @@ export default function Home() {
   }, [isDesktop, setZoom]);
 
   useEffect(() => {
+    async function fetchWithTimeout(url: string, timeoutMs = 8000): Promise<Response> {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const res = await fetch(url, { signal: controller.signal });
+        return res;
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
     async function loadStoryboard() {
       try {
         // Try localStorage first (for Vercel deployment / offline)
@@ -68,17 +79,21 @@ export default function Home() {
           return;
         }
 
-        // Fallback: fetch from static file (works on Vercel)
-        const res = await fetch('/ep001-storyboard.json');
-        if (res.ok) {
-          const data = await res.json();
-          setStoryboard(data);
-          setLoading(false);
-          return;
+        // Fallback: fetch from static file (works on Vercel) with timeout
+        try {
+          const res = await fetchWithTimeout('/ep001-storyboard.json');
+          if (res.ok) {
+            const data = await res.json();
+            setStoryboard(data);
+            setLoading(false);
+            return;
+          }
+        } catch {
+          console.warn('Static storyboard fetch failed, trying API...');
         }
 
-        // Try API route as last resort (works on local dev)
-        const apiRes = await fetch('/api/storyboard');
+        // Try API route as last resort (works on local dev) with timeout
+        const apiRes = await fetchWithTimeout('/api/storyboard');
         if (!apiRes.ok) throw new Error('Failed to load storyboard');
         const data = await apiRes.json();
         setStoryboard(data);
