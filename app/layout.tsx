@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Noto_Sans_JP, M_PLUS_1p, Dela_Gothic_One, RocknRoll_One, Rampart_One, DotGothic16 } from "next/font/google";
+import { Noto_Sans_JP, M_PLUS_1p } from "next/font/google";
 import "./globals.css";
 
 // Essential UI font — preloaded
@@ -7,7 +7,6 @@ const notoSansJP = Noto_Sans_JP({
   variable: "--font-noto-sans",
   subsets: ["latin"],
   display: "swap",
-  preload: true,
 });
 
 // Manga text font — preloaded
@@ -16,37 +15,11 @@ const mPlus1p = M_PLUS_1p({
   weight: ["400", "700"],
   subsets: ["latin"],
   display: "swap",
-  preload: true,
 });
 
-// SFX fonts — lazy loaded (preload: false to avoid 100+ font file preloads)
-const delaGothic = Dela_Gothic_One({
-  weight: "400",
-  subsets: ["latin"],
-  display: "swap",
-  preload: false,
-});
-
-const rocknRoll = RocknRoll_One({
-  weight: "400",
-  subsets: ["latin"],
-  display: "swap",
-  preload: false,
-});
-
-const rampart = Rampart_One({
-  weight: "400",
-  subsets: ["latin"],
-  display: "swap",
-  preload: false,
-});
-
-const dotGothic = DotGothic16({
-  weight: "400",
-  subsets: ["latin"],
-  display: "swap",
-  preload: false,
-});
+// SFX fonts (Dela Gothic One, RocknRoll One, Rampart One, DotGothic16)
+// are loaded on-demand via Google Fonts CDN <link> tag below.
+// This avoids preloading 100+ Japanese font subset files that block mobile rendering.
 
 export const metadata: Metadata = {
   title: "EVARIS CHORD Editor",
@@ -73,7 +46,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={`${notoSansJP.variable} ${mPlus1p.variable} ${delaGothic.className} ${rocknRoll.className} ${rampart.className} ${dotGothic.className} `}>
+    <html lang="ja" className={`${notoSansJP.variable} ${mPlus1p.variable}`}>
+      <head>
+        {/* SFX fonts loaded from Google Fonts CDN (not preloaded, display=swap prevents blocking) */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Rampart+One&family=RocknRoll+One&display=swap"
+        />
+      </head>
       <body>
         {children}
       </body>
