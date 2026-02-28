@@ -1,12 +1,8 @@
 /** @type {import('next').NextConfig} */
-const withPWA = require('next-pwa')({
-    dest: 'public',
-    disable: process.env.NODE_ENV === 'development',
-});
-
 const nextConfig = {
-    // Silence Turbopack warning since PWA is disabled in dev anyway
+    // PWA disabled for now — next-pwa causes service worker errors on Vercel
+    // Re-enable when ready to properly configure PWA
     turbopack: {}
 };
 
-module.exports = withPWA(nextConfig);
+module.exports = nextConfig;
