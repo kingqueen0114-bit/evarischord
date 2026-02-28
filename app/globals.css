@@ -10,8 +10,8 @@
   --color-accent-2: var(--accent-2);
   --color-danger: var(--danger);
 
-  --font-sans: var(--font-noto-sans);
-  --font-serif: var(--font-m-plus);
+  --font-sans: "Noto Sans JP", sans-serif;
+  --font-serif: "M PLUS 1p", sans-serif;
 }
 
 :root {

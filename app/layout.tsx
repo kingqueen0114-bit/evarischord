@@ -1,25 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Noto_Sans_JP, M_PLUS_1p } from "next/font/google";
 import "./globals.css";
 
-// Essential UI font — preloaded
-const notoSansJP = Noto_Sans_JP({
-  variable: "--font-noto-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-// Manga text font — preloaded
-const mPlus1p = M_PLUS_1p({
-  variable: "--font-m-plus",
-  weight: ["400", "700"],
-  subsets: ["latin"],
-  display: "swap",
-});
-
-// SFX fonts (Dela Gothic One, RocknRoll One, Rampart One, DotGothic16)
-// are loaded on-demand via Google Fonts CDN <link> tag below.
-// This avoids preloading 100+ Japanese font subset files that block mobile rendering.
+// All fonts loaded from Google Fonts CDN via <link> tag.
+// This prevents Next.js from preloading 120+ Japanese font subset files,
+// which blocks rendering on mobile devices.
 
 export const metadata: Metadata = {
   title: "EVARIS CHORD Editor",
@@ -46,12 +30,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={`${notoSansJP.variable} ${mPlus1p.variable}`}>
+    <html lang="ja">
       <head>
-        {/* SFX fonts loaded from Google Fonts CDN (not preloaded, display=swap prevents blocking) */}
+        {/* All fonts loaded from Google Fonts CDN (display=swap prevents blocking) */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Rampart+One&family=RocknRoll+One&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=M+PLUS+1p:wght@400;700&family=Dela+Gothic+One&family=DotGothic16&family=Rampart+One&family=RocknRoll+One&display=swap"
         />
       </head>
       <body>
